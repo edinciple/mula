@@ -1,0 +1,110 @@
+options {
+	STATIC = false;
+}
+
+PARSER_BEGIN(MulaParser)
+package mula.parser;
+
+import mula.structure.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class MulaParser {
+	final String VARIABLE = "variable";
+}
+PARSER_END(MulaParser)
+
+SKIP:{" "}
+SKIP:{"\n" | "\r"}
+TOKEN:{
+	<STRING:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+	>
+|	<SYMBOL:
+		(
+			["a" - "z"]	|
+			["A" - "Z"] |
+			["0" - "9"] |
+			"-" | "_"
+		)+
+	>
+|	<VARIABLE_PREFIX:
+		"$"
+	>
+}
+
+MulaList variable():
+{
+	MulaList list = new MulaList();
+	list.add(MulaAtom.get(VARIABLE));
+	MulaAtom name;
+}
+{
+	<VARIABLE_PREFIX>
+	(name = atom()
+		{list.add(name);}
+	)
+	{return list;}
+}
+
+MulaAtom atom():
+{
+	Token value;
+}
+{
+	(value = <STRING> | value = <SYMBOL>)
+	{return MulaAtom.get(value.image);}
+}
+
+MulaList list():
+{
+	MulaList list = new MulaList();
+	MulaSubstance item;
+}
+{
+	("("
+		(item = substance()
+			{list.add(item);}
+		)*
+	")")
+	{return list;}
+}
+
+MulaSubstance[] article():
+{
+	ArrayList<MulaSubstance> substances = new ArrayList<MulaSubstance>();
+	MulaSubstance item;
+	int size = 0;
+}
+{
+	((item = substance()
+		{
+			substances.add(item);
+			size++;
+		}
+	)+
+	<EOF>)
+	{return substances.toArray(new MulaSubstance[size]);}
+}
+
+MulaSubstance substance():
+{
+	MulaSubstance substance;
+}
+{
+	(substance = atom() | substance = list() | substance = variable())
+	{return substance;}
+}
+

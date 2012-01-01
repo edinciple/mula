@@ -14,6 +14,8 @@ public interface MulaParserConstants {
   int STRING = 4;
   /** RegularExpression Id. */
   int SYMBOL = 5;
+  /** RegularExpression Id. */
+  int VARIABLE_PREFIX = 6;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -26,6 +28,7 @@ public interface MulaParserConstants {
     "\"\\r\"",
     "<STRING>",
     "<SYMBOL>",
+    "\"$\"",
     "\"(\"",
     "\")\"",
   };

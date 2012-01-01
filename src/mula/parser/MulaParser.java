@@ -9,6 +9,18 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class MulaParser implements MulaParserConstants {
+        final String VARIABLE = "variable";
+
+  final public MulaList variable() throws ParseException {
+        MulaList list = new MulaList();
+        list.add(MulaAtom.get(VARIABLE));
+        MulaAtom name;
+    jj_consume_token(VARIABLE_PREFIX);
+    name = atom();
+                 list.add(name);
+         {if (true) return list;}
+    throw new Error("Missing return statement in function");
+  }
 
   final public MulaAtom atom() throws ParseException {
         Token value;
@@ -31,13 +43,14 @@ public class MulaParser implements MulaParserConstants {
   final public MulaList list() throws ParseException {
         MulaList list = new MulaList();
         MulaSubstance item;
-    jj_consume_token(6);
+    jj_consume_token(7);
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case STRING:
       case SYMBOL:
-      case 6:
+      case VARIABLE_PREFIX:
+      case 7:
         ;
         break;
       default:
@@ -47,7 +60,7 @@ public class MulaParser implements MulaParserConstants {
       item = substance();
                          list.add(item);
     }
-    jj_consume_token(7);
+    jj_consume_token(8);
          {if (true) return list;}
     throw new Error("Missing return statement in function");
   }
@@ -64,7 +77,8 @@ public class MulaParser implements MulaParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case STRING:
       case SYMBOL:
-      case 6:
+      case VARIABLE_PREFIX:
+      case 7:
         ;
         break;
       default:
@@ -84,8 +98,11 @@ public class MulaParser implements MulaParserConstants {
     case SYMBOL:
       substance = atom();
       break;
-    case 6:
+    case 7:
       substance = list();
+      break;
+    case VARIABLE_PREFIX:
+      substance = variable();
       break;
     default:
       jj_la1[3] = jj_gen;
@@ -111,7 +128,7 @@ public class MulaParser implements MulaParserConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x30,0x70,0x70,0x70,};
+      jj_la1_0 = new int[] {0x30,0xf0,0xf0,0xf0,};
    }
 
   /** Constructor with InputStream. */
@@ -228,7 +245,7 @@ public class MulaParser implements MulaParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[8];
+    boolean[] la1tokens = new boolean[9];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -242,7 +259,7 @@ public class MulaParser implements MulaParserConstants {
         }
       }
     }
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 9; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
