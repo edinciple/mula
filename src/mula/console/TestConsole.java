@@ -31,8 +31,8 @@ public class TestConsole {
         			throw new Exception("Unexpected list, using \"(match [scheme] [source])\" to test MulaScheme.");
         		}
         		
-        		MulaList scheme = (MulaList)substances[1];
-        		MulaList source = (MulaList)substances[2];
+        		MulaList scheme = (MulaList)((MulaList)substances[0]).get(1);
+        		MulaList source = (MulaList)((MulaList)substances[0]).get(2);
         		
         		MulaScheme mulaScheme = new MulaScheme(scheme);
         		Map<MulaAtom, List<MulaSubstance>> variables = mulaScheme.match(source);
@@ -47,8 +47,11 @@ public class TestConsole {
         				console.printf(name.toString() + " -> " + substance.toString());
         			}
         		}
+        		console.printf("\n");
         	} catch(Exception e) {
-        		console.printf(e.toString());
+        		console.printf(e.getMessage());
+        		e.printStackTrace();
+        		console.printf("\n");
         	}
         }
 	}
