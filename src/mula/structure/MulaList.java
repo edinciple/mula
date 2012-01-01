@@ -136,4 +136,25 @@ public final class MulaList extends MulaSubstance implements List<MulaSubstance>
 		result += ")";
 		return result;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof MulaList)) {
+			return false;
+		}
+		
+		MulaList list = (MulaList)obj;
+		
+		if(!(list.size() == this.size())) {
+			return false;
+		}
+		
+		for(int i = 0;i<this.size();i++) {
+			if(!(list.get(i).equals(this.get(i)))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

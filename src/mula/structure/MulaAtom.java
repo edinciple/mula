@@ -28,4 +28,19 @@ public final class MulaAtom extends MulaSubstance {
 	{
 		return this.getMeaning();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof MulaAtom)) {
+			return false;
+		}
+		
+		MulaAtom atom = (MulaAtom)obj;
+		
+		if(!(atom.getMeaning().equals(this.getMeaning()))) {
+			return false;
+		}
+		
+		return true;
+	}
 }
